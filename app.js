@@ -3,20 +3,14 @@ const app = new Koa();
 const cors = require('koa2-cors');
 const router = require('./routes/router');
 const bodyParser = require('Koa-bodyparser');
+const CORS = require('./config/cors');
+const koaJwt = require('koa-jwt');
+app.keys = ['some secret hurr'];
 
-app.use(cors({
-  origin: function (ctx) {
-    // if (ctx.url === '/test') {
-    //   return "*"; // 允许来自所有域名请求
-    // }
-    return 'http://localhost:3001';
-  },
-  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-  maxAge: 5,
-  credentials: true,
-  allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-}))
+// 密钥
+const jwtSecret = 'xzxzddezes';
+
+app.use(cors(CORS))
 
 // error handing
 app.use(async (ctx, next) => {
@@ -28,6 +22,12 @@ app.use(async (ctx, next) => {
     ctx.app.emit('error', error, ctx);
   }
 });
+
+// 拦截
+app.use(koaJwt({ secret: jwtSecret }).unless({
+  path: [/^\/login/, /^\/register/]
+}))
+
 
 //body parser
 app.use(bodyParser());
