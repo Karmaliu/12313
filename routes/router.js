@@ -7,7 +7,5 @@ router.get('/', async ctx => {
 })
 router.post('/login', user.login);
 router.post('/register', user.registered);
-router.get('/login', async ctx => {
-  ctx.body = 'xxxx'
-})
+router.post('/captcha', user.captcha);
 module.exports = router;

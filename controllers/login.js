@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const jwt = require('jwt-simple');
 const md5 = crypto.createHash('md5');
 const redis = require('../config/redis');
-
+const { send } = require('../config/captcha');
 // 密钥
 const jwtSecret = 'xzxzddezes';
 const tokenExpiresTime = 1000 * 60 * 60 * 24 * 7
@@ -62,6 +62,13 @@ module.exports = {
     });
     return ctx.body = 'success';
   },
+  // 验证码
+  captcha: async ctx => {
+    const { phone } = ctx.request.body;
+    return ctx.body = phone;
+    // console.log(phone);
+    // send(phone);
+  }
   // 退出登录
   // logout: async ctx => {
   //   ctx.session = null;

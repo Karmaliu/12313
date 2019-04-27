@@ -25,7 +25,7 @@ app.use(async (ctx, next) => {
 
 // 拦截
 app.use(koaJwt({ secret: jwtSecret }).unless({
-  path: [/^\/login/, /^\/register/]
+  path: [/^\/login/, /^\/register/, /^\/captcha/,]
 }))
 
 
